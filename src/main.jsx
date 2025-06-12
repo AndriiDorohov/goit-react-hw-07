@@ -4,6 +4,7 @@ import App from "./components/App/App";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { Toaster } from "react-hot-toast";
 
 import "modern-normalize/modern-normalize.css";
 import "./index.css";
@@ -13,6 +14,17 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <BrowserRouter>
         <App />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: "#2a2a2c",
+              color: "#fff",
+              borderRadius: "10px",
+              border: "1px solid #48484a",
+            },
+          }}
+        />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

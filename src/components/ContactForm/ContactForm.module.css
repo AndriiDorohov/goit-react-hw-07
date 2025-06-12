@@ -13,12 +13,14 @@
 }
 
 .input {
-    background-color: #3a3a3c;
+    background-color: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(2px);
     color: #fff;
     padding: 12px;
-    border-radius: 12px;
+    border-radius: 0;
     border: 1px solid #48484a;
     transition: all 0.2s ease;
+    opacity: 0.95;
 }
 
 .input:focus {
@@ -27,18 +29,28 @@
 }
 
 .button {
-    background-color: #0a84ff;
+    background-color: rgba(10, 132, 255, 0.2);
     width: 50%;
-    color: white;
+    color: #87ceeb;
     padding: 12px;
-    border-radius: 12px;
-    border: none;
+    border-radius: 0;
+    /* border: 1px solid rgba(255, 255, 255, 0.2); */
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease;
     align-self: center;
+    backdrop-filter: blur(6px);
+    border: none;
 }
 
 .button:hover {
-    background-color: #006fd6;
+    background-color: rgba(10, 132, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.error {
+    color: #ff3b30;
+    font-size: 0.875rem;
+    margin-top: 4px;
 }

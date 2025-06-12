@@ -1,46 +1,72 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { object, string } from "yup";
+import { addContact } from "../../redux/contactsOps";
 import styles from "./ContactForm.module.css";
+
+const ContactSchema = object({
+  name: string()
+    .matches(
+      /^[a-zA-Zа-яА-ЯіІїЇєЄёЁ'’\- ]{2,}$/,
+      "Name must contain only letters and be at least 2 characters",
+    )
+    .required("Name is required"),
+  number: string()
+    .matches(/^\+?[0-9\s\-]{7,20}$/, "Invalid phone number format")
+    .required("Phone number is required"),
+});
 
 export default function ContactForm() {
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!name.trim() || !number.trim()) return;
-    dispatch(addContact({ name, number }));
-    setName("");
-    setNumber("");
+  const handleSubmit = (values, { resetForm }) => {
+    dispatch(addContact({ name: values.name, phone: values.number }));
+    resetForm();
   };
 
   return (
     <div className="card">
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <label className={styles.label}>
-          Name
-          <input
-            className={styles.input}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </label>
-        <label className={styles.label}>
-          Number
-          <input
-            className={styles.input}
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-            required
-          />
-        </label>
-        <button className={styles.button} type="submit">
-          Add Contact
-        </button>
-      </form>
+      <Formik
+        initialValues={{ name: "", number: "" }}
+        validationSchema={ContactSchema}
+        onSubmit={handleSubmit}
+      >
+        {() => (
+          <Form className={styles.form}>
+            <label className={styles.label}>
+              Name
+              <Field
+                className={styles.input}
+                name="name"
+                placeholder="Max Payn"
+              />
+              <ErrorMessage
+                name="name"
+                component="div"
+                className={styles.error}
+              />
+            </label>
+
+            <label className={styles.label}>
+              Number
+              <Field
+                className={styles.input}
+                name="number"
+                placeholder="+11 123 456 789"
+              />
+              <ErrorMessage
+                name="number"
+                component="div"
+                className={styles.error}
+              />
+            </label>
+
+            <button className={styles.button} type="submit">
+              Add Contact
+            </button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }
